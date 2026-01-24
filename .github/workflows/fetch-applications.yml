@@ -1,0 +1,41 @@
+name: Fetch New VTU Applications
+
+on:
+  schedule:
+    # Run every hour at minute 0
+    - cron: '0 * * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # Need write permissions to commit last_id.txt back
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Run fetch script
+        env:
+          VTU_EMAIL: ${{ secrets.VTU_EMAIL }}
+          VTU_PASSWORD: ${{ secrets.VTU_PASSWORD }}
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+        run: python3 fetch_new_applications.py
+      
+      - name: Commit and push last_id.txt if changed
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add last_id.txt || true
+          git diff --staged --quiet || (git commit -m "Update last processed ID [skip ci]" && git push)
+
