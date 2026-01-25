@@ -2,7 +2,7 @@ name: Fetch New VTU Applications
 
 on:
   schedule:
-    # Run every hour at minute 0
+    # Run every hour at minute 0 (utc )
     - cron: '0 * * * *'
   workflow_dispatch:  # Allow manual trigger
 
