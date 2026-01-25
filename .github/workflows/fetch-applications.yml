@@ -2,9 +2,8 @@ name: Fetch New VTU Applications
 
 on:
   schedule:
-    # Run every 15 minutes for testing (will change to every 2 hours once confirmed working)
-    - cron: '*/15 * * * *'
-  workflow_dispatch:  # Allow manual trigger
+    - cron: "*/15 * * * *"   # Run every 15 minutes for testing
+  workflow_dispatch:
 
 jobs:
   fetch:
