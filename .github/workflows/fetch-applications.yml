@@ -2,7 +2,7 @@ name: Fetch New VTU Applications
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # Run every 15 minutes for testing
+    - cron: "0 10 * * *"   # Runs at 3:30 PM IST (10:00 UTC)
   workflow_dispatch:
 
 jobs:
